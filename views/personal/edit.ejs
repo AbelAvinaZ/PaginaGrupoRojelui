@@ -1,0 +1,44 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row">
+        <h1 class="text-center">Editar Personal</h1>
+        <div class="col-6 offset-3">
+            <form action="/personal/<%= personal._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+                <div class="mb-3">
+                    <label class="form-label" for="name">Nombre</label>
+                    <input class="form-control" type="text" id="name" name="personal[name]" value="<%= personal.name %>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="workstation" class="form-label">Puesto de Trabajo</label>
+                    <select class="form-select form-select-sm" aria-label="Default select example" id="workstation" name="personal[workstation]" value="<%= personal.workstation %>" required>
+                        <option value="Garrotero">Garrotero</option>
+                        <option value="Mesero">Mesero</option>
+                        <option value="Barista">Barista</option>
+                      </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Locación</label>
+                    <input class="form-control" type="text" id="location" name="personal[location]" value="<%= personal.location %>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Url Imagen</label>
+                    <!-- falta ver por que me sale error con personal[image] en validatePersonal -->
+                    <!-- <input class="form-control" type="text" id="image" name="personal[image]" value="<%= personal.image %>"> -->
+                    <input class="form-control" type="text" id="image" value="<%= personal.image %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="birthdate">Fecha de Nacimiento</label>
+                    <input class="form-control" type="date" id="birthdate" name="personal[birthdate]" value="<%= personal.birthdate %>" data-date-format="mm/dd/yyyy">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="startdate">Fecha de Ingreso</label>
+                    <input class="form-control" type="date" id="startdate" name="personal[startdate]" value="<%= personal.startdate %>" data-date-format="mm/dd/yyyy" required>
+                </div>
+                <div class="mb-3">
+                <button class="btn btn-info">Guardar</button>
+            </div>
+            </form>
+            <a href="/personal/<%= personal._id %>">Personal</a>        
+        </div>
+    </div>
+    

@@ -1,0 +1,62 @@
+<% layout("layouts/boilerplate") %>
+
+  <!-- FALTA VER POR QUE NO SE MUESTRAN CIERTAS OPCIONES -->
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <img src="<%= personal.image %>" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= personal.name %>
+          </h5>
+          <p class="card-text">
+            <%= personal.workstation %>
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <%= personal.location %>
+          </li>
+          <li class="list-group-item">
+            <%= personal.startdate %>
+          </li>
+          <li class="list-group-item">
+            <%= personal.birthdate %>
+          </li>
+        </ul>
+        <div class="card-body">
+          <a class="card-link btn btn-warning" href="/personal/<%= personal._id %>/edit">Editar</a>
+          <form class="d-inline" action="/personal/<%= personal._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Eliminar Personal</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <h2>Deja tu Reseña</h2>
+      <form action="/personal/<%= personal._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="rating">Calificación</label>
+          <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="body">Reseña</label>
+          <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+        </div>
+        <button class="btn btn-success">Actualizar</button>
+      </form>
+      <% for(let review of personal.reviews) {%>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Calificación: <%= review.rating %>
+            </h5>
+            <p class="card-text">Reseña: <%= review.body %>
+            </p>
+            <form action="/personal/<%= personal._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-danger btn-sm">Eliminar</button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+    </div>
+  </div>
