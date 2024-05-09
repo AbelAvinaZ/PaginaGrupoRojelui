@@ -18,45 +18,53 @@
             <%= personal.location %>
           </li>
           <li class="list-group-item">
-            <%= personal.startdate %>
+            Fecha de ingreso: <%= personal.startdate %>
           </li>
           <li class="list-group-item">
-            <%= personal.birthdate %>
+            Fecha de nacimiento: <%= personal.birthdate %>
+          </li>
+          <li class="list-group-item">
+            Publicado por: <%= personal.author.username %>
           </li>
         </ul>
-        <div class="card-body">
-          <a class="card-link btn btn-warning" href="/personal/<%= personal._id %>/edit">Editar</a>
-          <form class="d-inline" action="/personal/<%= personal._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Eliminar Personal</button>
-          </form>
-        </div>
+        <% if(currentUser && personal.author.equals(currentUser)) { %>
+          <div class="card-body">
+            <a class="card-link btn btn-warning" href="/personal/<%= personal._id %>/edit">Editar</a>
+            <form class="d-inline" action="/personal/<%= personal._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-danger">Eliminar Personal</button>
+            </form>
+          </div>
+          <% } %>
       </div>
     </div>
     <div class="col-6">
-      <h2>Deja tu Reseña</h2>
-      <form action="/personal/<%= personal._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
-        <div class="mb-3">
-          <label class="form-label" for="rating">Calificación</label>
-          <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5">
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="body">Reseña</label>
-          <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-        </div>
-        <button class="btn btn-success">Actualizar</button>
-      </form>
-      <% for(let review of personal.reviews) {%>
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Calificación: <%= review.rating %>
-            </h5>
-            <p class="card-text">Reseña: <%= review.body %>
-            </p>
-            <form action="/personal/<%= personal._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-danger btn-sm">Eliminar</button>
-            </form>
+      <% if(currentUser){ %>
+        <h2>Deja tu Reseña</h2>
+        <form action="/personal/<%= personal._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="rating">Calificación</label>
+            <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5">
           </div>
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="body">Reseña</label>
+            <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+          </div>
+          <button class="btn btn-success">Actualizar</button>
+        </form>
         <% } %>
+          <% for(let review of personal.reviews) {%>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Calificación: <%= review.rating %></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Por: <%= review.author.username %></h6>
+                <p class="card-text">Reseña: <%= review.body %></p>
+                <% if(currentUser && review.author.equals(currentUser)) { %>
+                <form action="/personal/<%= personal._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+                <% } %>
+              </div>
+            </div>
+            <% } %>
     </div>
   </div>
