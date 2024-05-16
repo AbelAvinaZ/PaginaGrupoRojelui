@@ -3,7 +3,7 @@
     <div class="row">
         <h1 class="text-center">Editar Personal</h1>
         <div class="col-6 offset-3">
-            <form action="/personal/<%= personal._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+            <form action="/personal/<%= personal._id %>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="name">Nombre</label>
                     <input class="form-control" type="text" id="name" name="personal[name]" value="<%= personal.name %>" required>
@@ -21,10 +21,10 @@
                     <input class="form-control" type="text" id="location" name="personal[location]" value="<%= personal.location %>" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Url Imagen</label>
-                    <!-- falta ver por que me sale error con personal[image] en validatePersonal -->
-                    <!-- <input class="form-control" type="text" id="image" name="personal[image]" value="<%= personal.image %>"> -->
-                    <input class="form-control" type="text" id="image" name="personal[image]" value="<%= personal.image %>">
+                    <div class="form-file">
+                    <label for="image" class="form-label">Agregar imagen(es)...</label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
+                  </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="birthdate">Fecha de Nacimiento</label>
@@ -33,6 +33,15 @@
                 <div class="mb-3">
                     <label class="form-label" for="startdate">Fecha de Ingreso</label>
                     <input class="form-control" type="date" id="startdate" name="personal[startdate]" value="<%= personal.startdate %>" data-date-format="mm/dd/yyyy" required>
+                </div>
+                <div class="mb-3">
+                    <% personal.images.forEach(function(img, i) { %>
+                        <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>">
+                        </div>
+                        <label for="image-<%= i %>">Borrar imagen</label>
+                        <% }) %>
                 </div>
                 <div class="mb-3">
                 <button class="btn btn-info">Guardar</button>
